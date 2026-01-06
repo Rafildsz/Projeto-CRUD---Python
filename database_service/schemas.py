@@ -6,3 +6,11 @@ class ClienteCreate(BaseModel):
     correntista: bool
     score_credito: float
     saldo_cc: float
+
+class ClienteUpdate(BaseModel):
+    nome: str
+    telefone: int
+    correntista: bool
+    score_credito: float
+    saldo_cc: float
+
