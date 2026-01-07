@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float, Boolean
-from database import Base
+from database_service.database import Base
 
 class Cliente(Base):
     __tablename__ = "clientes"

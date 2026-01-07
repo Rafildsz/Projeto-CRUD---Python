@@ -1,9 +1,9 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 
-from database import engine, Base, SessionLocal
-from models import Cliente
-from schemas import ClienteCreate, ClienteUpdate
+from database_service.database import engine, Base, SessionLocal
+from database_service.models import Cliente
+from database_service.schemas import ClienteCreate, ClienteUpdate
 
 
 app = FastAPI()
