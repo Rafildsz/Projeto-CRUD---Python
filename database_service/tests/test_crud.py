@@ -8,7 +8,7 @@ def test_criar_cliente():
         "/clientes",
         json={
             "nome": "João Teste",
-            "telefone": 11999999999,
+            "telefone": "11999999999",
             "correntista": True,
             "score_credito": 700,
             "saldo_cc": 1500.0
@@ -31,7 +31,7 @@ def test_atualizar_cliente():
         "/clientes/1",
         json={
             "nome": "João Atualizado",
-            "telefone": 11888888888,
+            "telefone": "11888888888",
             "correntista": False,
             "score_credito": 650,
             "saldo_cc": 900.0
