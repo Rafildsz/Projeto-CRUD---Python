@@ -1,4 +1,4 @@
-from cliente_service.models import Cliente
+from cliente_service.models import ClienteEntrada, ClienteCompleto
 
 def calcular_score(saldo_cc: float, correntista: bool) -> int:
     score = 0

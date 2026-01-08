@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from cliente_service.models import Cliente
+from cliente_service.models import ClienteEntrada, ClienteCompleto
 from cliente_service.service import calcular_score
 from cliente_service.http_client import criar_cliente_no_database_service
 
@@ -10,18 +10,21 @@ def home():
     return {"mensagem": "Cliente Service funcionando"}
 
 @app.post("/clientes")
-def criar_cliente(cliente: Cliente):
-    cliente_dict = cliente.dict()
-
-    criar_cliente_no_database_service(cliente_dict)
+def criar_cliente(cliente: ClienteEntrada):
 
     score = calcular_score(
         saldo_cc=cliente.saldo_cc,
         correntista=cliente.correntista
     )
 
-    return {
-        "mensagem": "Cliente recebido com sucesso",
-        "nome": cliente.nome,
-        "score_credito": score
-    }
+    cliente_completo = ClienteCompleto(
+        nome=cliente.nome,
+        telefone=cliente.telefone,
+        saldo_cc=cliente.saldo_cc,
+        correntista=cliente.correntista,
+        score_credito=score
+    )
+
+    resposta = criar_cliente_no_database_service(cliente_completo.dict())
+
+    return resposta
