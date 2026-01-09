@@ -100,3 +100,5 @@ curl -X PUT http://127.0.0.1:8000/clientes/1 \
 ### DELETE - Deletar Cliente 
 
 curl -X DELETE http://127.0.0.1:8000/clientes/1
+
+---
