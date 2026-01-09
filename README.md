@@ -56,9 +56,11 @@ uvicorn database_service.main:app --reload --port 8001
 ### Executando Testes 
 
 - **database_service (CRUD)**
+
 pytest database_service/tests/test_crud.py
 
 - **cliente_service (regra de negócio)**
+
 pytest cliente_service/tests/test_score.py
 
 ---
