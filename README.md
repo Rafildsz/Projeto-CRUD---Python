@@ -47,6 +47,18 @@ Essa lógica não fica no banco de dados, garantindo separação de responsabili
 
 cd Projeto-CRUD---Python
 
+### Criar ambiente virtual (venv)
+
+python3 -m venv venv
+
+### Ativar venv no terminal
+
+source venv/bin/activate
+
+### Instalar dependencias do projeto
+
+pip install -r requirements.txt
+
 ### Rodar as APIs - Ambas em terminais diferentes
 
 uvicorn cliente_service.main:app --reload --port 8000
