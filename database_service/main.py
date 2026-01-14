@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
+from fastapi import HTTPException, status
 
 from database_service.database import engine, Base, SessionLocal
 from database_service.models import Cliente
@@ -21,40 +22,70 @@ def get_db():
     finally:
         db.close()
 
-@app.post("/clientes")
+
+
+
+@app.post("/clientes", status_code=status.HTTP_201_CREATED)
 def criar_cliente(cliente: ClienteCreate, db: Session = Depends(get_db)):
-    novo_cliente = Cliente(
-        nome=cliente.nome,
-        telefone=cliente.telefone,
-        correntista=cliente.correntista,
-        score_credito=cliente.score_credito,
-        saldo_cc=cliente.saldo_cc
-    )
 
-    db.add(novo_cliente)
-    db.commit()
-    db.refresh(novo_cliente)
+    try:
+        novo_cliente = Cliente(
+            nome=cliente.nome,
+            telefone=cliente.telefone,
+            correntista=cliente.correntista,
+            score_credito=cliente.score_credito,
+            saldo_cc=cliente.saldo_cc
+        )
+    
+        db.add(novo_cliente)
+        db.commit()
+        db.refresh(novo_cliente)
+    
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=e
+        ) 
 
-    return {"mensagem": "Cliente criado com sucesso"}
+    return novo_cliente
 
-@app.get("/clientes")
+
+
+
+@app.get("/clientes", status_code=status.HTTP_200_OK)
 def listar_clientes(db: Session = Depends(get_db)):
     clientes = db.query(Cliente).all()
     return clientes
 
 
 
-@app.put("/clientes/{cliente_id}")
-def atualizar_cliente(
-    cliente_id: int,
-    cliente: ClienteUpdate,
-    db: Session = Depends(get_db)
-):
+
+@app.get("/clientes/{cliente_id}", status_code=status.HTTP_200_OK)
+def buscar_cliente(cliente_id: int, db: Session = Depends(get_db)):
+
+    cliente = db.query(Cliente).filter(Cliente.id == cliente_id).first()
+
+    if not cliente:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Cliente não encontrado"
+        )
+
+    return cliente
+
+
+
+
+@app.put("/clientes/{cliente_id}", status_code=status.HTTP_200_OK)
+def atualizar_cliente(cliente_id: int, cliente: ClienteUpdate, db: Session = Depends(get_db)):
     cliente_db = db.query(Cliente).filter(Cliente.id == cliente_id).first()
 
     if not cliente_db:
-        return {"erro": "Cliente não encontrado"}
-    
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Cliente não encontrado"
+        )
+
     cliente_db.nome = cliente.nome
     cliente_db.telefone = cliente.telefone
     cliente_db.correntista = cliente.correntista
@@ -65,19 +96,25 @@ def atualizar_cliente(
 
     return {"mensagem": "Cliente atualizado com sucesso"}
 
-@app.delete("/clientes/{cliente_id}")
-def deletar_cliente(
-    cliente_id: int,
-    db: Session = Depends(get_db)
-):
+
+
+
+
+@app.delete("/clientes/{cliente_id}", status_code=status.HTTP_200_OK)
+def deletar_cliente(cliente_id: int, db: Session = Depends(get_db)):
+
     cliente = db.query(Cliente).filter(Cliente.id == cliente_id).first()
 
     if not cliente:
-        return {"erro": "Cliente não encontrado"}
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Cliente não encontrado"
+        )
 
     db.delete(cliente)
     db.commit()
 
     return {"mensagem": "Cliente deletado com sucesso"}
+
 
 

@@ -6,7 +6,7 @@ class Cliente(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     nome = Column(String)
-    telefone = Column(Integer)
+    telefone = Column(String)
     correntista = Column(Boolean)
     score_credito = Column(Float)
     saldo_cc = Column(Float)
