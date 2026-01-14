@@ -89,7 +89,7 @@ curl -X POST http://127.0.0.1:8000/clientes \
 -H "Content-Type: application/json" \
 -d '{
   "nome": "João Silva",
-  "telefone": 11999998888,
+  "telefone": "11999998888",
   "correntista": true,
   "saldo_cc": 8500
 }'
@@ -104,7 +104,7 @@ curl -X PUT http://127.0.0.1:8000/clientes/1 \
 -H "Content-Type: application/json" \
 -d '{
   "nome": "João Silva Atualizado",
-  "telefone": 11911112222,
+  "telefone": "11911112222",
   "correntista": false,
   "saldo_cc": 400
 }'
