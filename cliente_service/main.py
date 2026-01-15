@@ -53,6 +53,14 @@ def buscar_cliente(cliente_id: int):
     return cliente    
 
 
+@app.get("/clientes/score/{cliente_id}", status_code=status.HTTP_200_OK)
+def buscar_score(cliente_id: int):
+
+    cliente = listar_cliente_do_database_service_com_id(cliente_id)
+    return {"score_credito": cliente["score_credito"], 
+            "nome": cliente["nome"]
+            }
+
 
 
 @app.put("/clientes/{cliente_id}", status_code=status.HTTP_200_OK)

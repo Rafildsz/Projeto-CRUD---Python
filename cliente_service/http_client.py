@@ -29,8 +29,7 @@ def listar_cliente_do_database_service_com_id(cliente_id: int):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Cliente não encontrado"
         )
-
-    response.raise_for_status()
+    
     return response.json()
 
 def atualizar_cliente_no_database_service(cliente_id: int, cliente: dict):
