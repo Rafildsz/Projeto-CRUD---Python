@@ -1,7 +1,7 @@
 from fastapi import FastAPI, status
-from cliente_service.models import ClienteEntrada, ClienteCompleto
-from cliente_service.service import calcular_score
-from cliente_service.http_client import criar_cliente_no_database_service, listar_clientes_do_database_service, atualizar_cliente_no_database_service, deletar_cliente_no_database_service, listar_cliente_do_database_service_com_id
+from cliente_service.models.models import ClienteEntrada, ClienteCompleto
+from cliente_service.service.service import calcular_score, cliente_correntista
+from cliente_service.http_client.http_client import criar_cliente_no_database_service, listar_clientes_do_database_service, atualizar_cliente_no_database_service, deletar_cliente_no_database_service, listar_cliente_do_database_service_com_id,atualizar_cliente_parcial_no_database_service
 
 app = FastAPI()
 
@@ -15,16 +15,19 @@ def home():
 @app.post("/clientes", status_code=status.HTTP_201_CREATED)
 def criar_cliente(cliente: ClienteEntrada):
 
-    
+    saldo_corrigido = cliente_correntista(
+        correntista=cliente.correntista,
+        saldo_cc=cliente.saldo_cc
+    )
+
     score = calcular_score(
-        saldo_cc=cliente.saldo_cc,
-        correntista=cliente.correntista
+        saldo_cc=saldo_corrigido
     )
 
     cliente_completo = ClienteCompleto(
         nome=cliente.nome,
         telefone=cliente.telefone,
-        saldo_cc=cliente.saldo_cc,
+        saldo_cc=saldo_corrigido,
         correntista=cliente.correntista,
         score_credito=score
     )
@@ -32,9 +35,6 @@ def criar_cliente(cliente: ClienteEntrada):
     resposta = criar_cliente_no_database_service(cliente_completo.dict())
 
     return resposta
-
-
-
 
 
 @app.get("/clientes", status_code=status.HTTP_200_OK)
@@ -66,15 +66,18 @@ def buscar_score(cliente_id: int):
 @app.put("/clientes/{cliente_id}", status_code=status.HTTP_200_OK)
 def atualizar_cliente(cliente_id: int, cliente: ClienteEntrada):
 
+    saldo_corrigido = cliente_correntista(
+        correntista=cliente.correntista,
+        saldo_cc=cliente.saldo_cc
+    )
     score = calcular_score(
-        saldo_cc=cliente.saldo_cc,
-        correntista=cliente.correntista
+        saldo_cc=saldo_corrigido
     )
 
     cliente_completo = ClienteCompleto(
         nome=cliente.nome,
         telefone=cliente.telefone,
-        saldo_cc=cliente.saldo_cc,
+        saldo_cc=saldo_corrigido,
         correntista=cliente.correntista,
         score_credito=score
     )
@@ -83,7 +86,11 @@ def atualizar_cliente(cliente_id: int, cliente: ClienteEntrada):
 
     return resposta
 
-
+@app.patch("/clientes/{cliente_id}", status_code=status.HTTP_200_OK)
+def atualizar_cliente_parcial(cliente_id: int, cliente: dict):
+       
+    resposta = atualizar_cliente_parcial_no_database_service(cliente_id, cliente)
+    return resposta
 
 
 

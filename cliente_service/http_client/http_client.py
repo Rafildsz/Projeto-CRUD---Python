@@ -47,6 +47,21 @@ def atualizar_cliente_no_database_service(cliente_id: int, cliente: dict):
     response.raise_for_status()
     return response.json()
 
+def atualizar_cliente_parcial_no_database_service(cliente_id: int, cliente: dict):
+    response = requests.patch(
+        f"{DATABASE_SERVICE_URL}/{cliente_id}",
+        json=cliente
+    )
+
+    if response.status_code == 404:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Cliente não encontrado"
+        )
+    
+    response.raise_for_status()
+    return response.json()
+
 def deletar_cliente_no_database_service(cliente_id: int):   
     response = requests.delete(
         f"{DATABASE_SERVICE_URL}/{cliente_id}"
@@ -57,6 +72,13 @@ def deletar_cliente_no_database_service(cliente_id: int):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Cliente não encontrado"
         )
+
+    if response.status_code == 400:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Não é possível deletar um cliente com saldo na conta corrente"
+        )
+
     
     response.raise_for_status()
     return response.json()

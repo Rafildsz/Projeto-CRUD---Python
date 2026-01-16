@@ -61,9 +61,9 @@ pip install -r requirements.txt
 
 ### Rodar as APIs - Ambas em terminais diferentes
 
-uvicorn cliente_service.main:app --reload --port 8000
+uvicorn database_service.app.main:app --reload --port 8001
 
-uvicorn database_service.main:app --reload --port 8001
+uvicorn cliente_service.app.main:app --reload --port 8000
 
 ### Executando Testes 
 

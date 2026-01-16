@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from database_service.main import app
+from database_service.app.main import app
 
 client = TestClient(app)
 

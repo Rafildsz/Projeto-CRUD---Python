@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 
 class ClienteCreate(BaseModel):
@@ -13,4 +14,11 @@ class ClienteUpdate(BaseModel):
     correntista: bool
     score_credito: float
     saldo_cc: float
+
+class ClienteUpdateUnit(BaseModel):
+    nome: Optional[str] = None
+    telefone: Optional[str] = None
+    correntista: Optional[bool] = None
+    score_credito: Optional[int] = None
+    saldo_cc: Optional[float] = None
 
