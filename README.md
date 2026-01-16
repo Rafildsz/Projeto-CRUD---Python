@@ -118,7 +118,7 @@ curl -X PUT http://127.0.0.1:8000/clientes/1 \
 curl -X PATCH http://127.0.0.1:8000/clientes/1 \
 -H "Content-Type: application/json" \
 -d '{
-  "saldo_cc": 400
+  "saldo_cc": 500
 }'
 
 ### DELETE - Deletar Cliente 
