@@ -98,6 +98,10 @@ curl -X POST http://127.0.0.1:8000/clientes \
 
 curl http://127.0.0.1:8000/clientes
 
+### READ - Listar Clientes po ID 
+
+curl http://127.0.0.1:8000/clientes/1
+
 ### UPDATE - Atualizar Clientes 
 
 curl -X PUT http://127.0.0.1:8000/clientes/1 \
@@ -106,6 +110,14 @@ curl -X PUT http://127.0.0.1:8000/clientes/1 \
   "nome": "João Silva Atualizado",
   "telefone": "11911112222",
   "correntista": false,
+  "saldo_cc": 400
+}'
+
+### PATCH - Atualizar Infomação de Clientes 
+
+curl -X PATCH http://127.0.0.1:8000/clientes/1 \
+-H "Content-Type: application/json" \
+-d '{
   "saldo_cc": 400
 }'
 
