@@ -98,7 +98,7 @@ curl -X POST http://127.0.0.1:8000/clientes \
 
 curl http://127.0.0.1:8000/clientes
 
-### READ - Listar Clientes po ID 
+### READ - Listar Clientes por ID 
 
 curl http://127.0.0.1:8000/clientes/1
 
